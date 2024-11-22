@@ -1,0 +1,58 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
+# Predefined username-password pairs
+credentials = {
+    "admin": "password123",
+
+    "user": "welcome123"
+}
+
+@app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # Get the username and password from the form
+        username = request.form.get("username")
+        password = request.form.get("password")
+        
+        # Debugging: Print the received values
+        print(f"DEBUG: Username = {username}, Password = {password}")
+        
+        # Check credentials
+        if username in credentials and credentials[username] == password:
+            return f"<h1>Welcome, {username}!</h1>"
+        else:
+            return "<h1>Invalid username or password!</h1>"
+    
+    return render_template("login.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
+
+
+
+
+now html part
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>
